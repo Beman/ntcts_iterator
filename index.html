@@ -1,0 +1,70 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>ntcts_iterator</title>
+</head>
+
+<body>
+
+<h1 dir="ltr">NTCTS Iterator Adaptor</h1>
+<p dir="ltr">Class template ntcts_iterator creates a standard conforming forward 
+iterator that adapts a null-terminated character type string (NTCTS) pointer 
+into a forward iterator suitable for use as a half-open range as required by 
+algorithms and other range-based functions.</p>
+<blockquote>
+  <p>[<i>Note:</i> NTCTS is defined by the C++ standard [defns.ntcts] as &quot;a 
+  sequence of values that have <i>character type</i> that precede the 
+  terminating null character type value <code>charT()</code>&quot;. <i>-- end note</i>]</p>
+</blockquote>
+<h2>Header &lt;boost/ntcts_iterator.hpp&gt; Synopsis</h2>
+<blockquote>
+  <pre>namespace boost
+{
+  template &lt;class charT&gt;
+    class ntcts_iterator
+     : public boost::iterator_facade&lt;ntcts_iterator&lt;charT&gt;,
+          charT, std::forward_iterator_tag&gt; 
+  {
+  public:
+    ntcts_iterator() noexcept;  // constructs the end iterator
+    ntcts_iterator(charT* begin) noexcept;
+  };
+
+  typedef ntcts_iterator&lt;const char&gt;     char_iterator;
+  typedef ntcts_iterator&lt;const wchar_t&gt;  wchar_iterator;
+  typedef ntcts_iterator&lt;const char16_t&gt; char16_iterator;
+  typedef ntcts_iterator&lt;const char32_t&gt; char32_iterator;
+
+  template &lt;class charT&gt;
+    ntcts_iterator&lt;charT&gt; begin(ntcts_iterator&lt;charT&gt; it);
+  template &lt;class charT&gt;
+    ntcts_iterator&lt;charT&gt; end(ntcts_iterator&lt;charT&gt; it);
+}</pre>
+</blockquote>
+<h3>Class template <code>ntcts_iterator</code></h3>
+<p><code>ntcts_iterator</code> satisfies the requirements of an forward iterator 
+([forward.iterators]).</p>
+<p>If an iterator of type <code>ntcts_iterator</code> is advanced past the last 
+element, that iterator shall become equal to the end iterator value. The<code> 
+ntcts_iterator</code> default constructor shall create an iterator equal to the 
+end iterator value, and this shall be the only valid iterator for the end 
+condition.</p>
+<p>The result of <code>operator*</code> on an end iterator is undefined 
+behavior. For any other iterator value a <code>charT&amp;</code> is returned. The 
+result of <code>operator-&gt;</code> on an end iterator is undefined behavior. For 
+any other iterator value a <code>charT*</code> is returned.</p>
+<p>Two end iterators are always equal. An end iterator shall not be equal to a 
+non-end iterator.</p>
+<p>The above wording is based on the Standard Library's istream_iterator 
+wording.</p>
+<h2>FAQ</h2>
+<hr>
+<p>&nbsp;</p>
+
+</body>
+
+</html>
