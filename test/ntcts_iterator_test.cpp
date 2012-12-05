@@ -57,6 +57,17 @@ int cpp_main(int, char*[])
   BOOST_TEST_EQ(*i6, 'a');
   *i6 = 'z';
   BOOST_TEST_EQ(*i6, 'z');
+  
+#ifndef BOOST_NO_CXX11_RANGE_BASED_FOR
+
+  s5.clear();
+  for (auto c : char_iterator(p5) )
+  {
+    s5 += c;
+  }
+  BOOST_TEST(s5 == p5);
+
+#endif  
 
   return ::boost::report_errors();
 }

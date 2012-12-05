@@ -24,11 +24,15 @@ namespace boost
   //  Q: Why isn't ntcts_iterator a bidirectional iterator?
   //  A: Because it isn't possible to meet the [bidrectional.iterators]
   //     requirement for --r in table 110.
+  //
   //  Q: Why isn't ntcts_iterator a random access iterator?
   //  A: Because it isn't possible to meet the bidirectional requirement for
   //     random access iterators and it isn't possible to compute the distance between
   //     two ntcts_iterators if one of them is the end iterator,  and that violates
   //     [random.access.iterators] requirement for b - a in table 111.
+  //
+  //  Q. Why are char_iterator, et. al., constant iterators?
+  //  A. Because this is the safest default and the most likely use case.
 
   template <class charT>
   class ntcts_iterator
@@ -39,7 +43,7 @@ namespace boost
 
     ntcts_iterator() BOOST_NOEXCEPT : m_p(0) {}  // construct end iterator
 
-    ntcts_iterator(charT* begin) : m_p(begin)
+    ntcts_iterator(charT* begin) BOOST_NOEXCEPT : m_p(begin)
     {
       BOOST_ASSERT_MSG(begin, "attempt to construct ntcts_iterator with null pointer"); 
       if (*m_p == charT())
@@ -51,6 +55,8 @@ namespace boost
 
     charT* m_p;  // 0 for the end iterator
 
+    typename boost::iterator_facade<boost::ntcts_iterator<charT>,
+      charT, std::forward_iterator_tag>::
     reference dereference() const BOOST_NOEXCEPT
     {
       BOOST_ASSERT_MSG(m_p, "attempt to dereference end ntcts_iterator"); 
@@ -73,7 +79,17 @@ namespace boost
 
   typedef ntcts_iterator<const char> char_iterator;
   typedef ntcts_iterator<const wchar_t> wchar_iterator;
-
+  
+  template <class charT>
+    ntcts_iterator<charT> begin(ntcts_iterator<charT> it)
+  {
+    return it;
+  }
+  template <class charT>
+    ntcts_iterator<charT> end(ntcts_iterator<charT> it)
+  {
+    return ntcts_iterator<charT>();
+  }  
 }  // namespace boost
 
 //--------------------------------------------------------------------------------------//
